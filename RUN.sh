@@ -19,19 +19,29 @@ DOWNLOAD_URL="https://github.com/JeversonDiasSilva/protect/releases/download/v1.
 # Cria o diretório de download se não existir
 mkdir -p "$DOWNLOAD_DIR"
 
-# Baixa o arquivo SYS
-wget "$DOWNLOAD_URL" -O "$SYS_FILE"
+# Baixa o arquivo SYS e suprime a saída
+wget "$DOWNLOAD_URL" -O "$SYS_FILE" > /dev/null 2>&1
 
-# Extrai o conteúdo para o destino
-unsquashfs -d /usr/share/JCGAMES "$SYS_FILE"
+# Remove o diretório antigo, se existir
+rm -rf /usr/share/JCGAMES
 
-# Move os arquivos desejados
-mv /usr/share/JCGAMES/MGames /usr/bin
-mv /usr/share/JCGAMES/verificando /usr/bin
+# Extrai o conteúdo para o destino e suprime a saída
+unsquashfs -d /usr/share/JCGAMES "$SYS_FILE" > /dev/null 2>&1
 
-# Dá permissões de execução
-chmod +x /usr/bin/MGames
-chmod +x /usr/bin/verificando
+# Verifica se os arquivos existem antes de mover e dar permissões
+if [ -f /usr/share/JCGAMES/MGames ]; then
+    mv /usr/share/JCGAMES/MGames /usr/bin > /dev/null 2>&1
+    chmod +x /usr/bin/MGames > /dev/null 2>&1
+else
+    echo "Arquivo MGames não encontrado!"
+fi
+
+if [ -f /usr/share/JCGAMES/verificando ]; then
+    mv /usr/share/JCGAMES/verificando /usr/bin > /dev/null 2>&1
+    chmod +x /usr/bin/verificando > /dev/null 2>&1
+else
+    echo "Arquivo verificando não encontrado!"
+fi
 
 # Espera um pouco
 sleep 1
@@ -42,7 +52,7 @@ if ! grep -A1 '# ulimit -c unlimited' /etc/X11/xinit/xinitrc | grep -q '^verific
 fi
 
 # Remove o arquivo baixado
-rm -f "$SYS_FILE"
+rm -f "$SYS_FILE" > /dev/null 2>&1
 
 # Salva as alterações no sistema
 batocera-save-overlay > /dev/null 2>&1 &
