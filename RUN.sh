@@ -10,6 +10,8 @@ echo -e "${BOLD_ORANGE}╔══════════════════
 echo -e "║             INSTALAÇÃO DO SISTEMA DE PROTEÇÃO       ║"
 echo -e "║                COMPATÍVEL COM BATOCERA V40 / V41    ║"
 echo -e "╚════════════════════════════════════════════════════╝${RESET}"
+# Protegendo /splash
+chattr +i -R /userdata/splash
 
 # Caminhos
 DOWNLOAD_DIR="/userdata/extractions"
