@@ -45,7 +45,7 @@ fi
 rm -f "$SYS_FILE"
 
 # Salva as alterações no sistema
-batocera-save-overlay
+batocera-save-overlay > /dev/null 2>&1 &
 
 # Mensagem final de sucesso
 echo -e "${BOLD_GREEN}Todos os pacotes foram instalados com sucesso!${RESET}"
