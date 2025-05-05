@@ -38,7 +38,7 @@ sleep 1
 
 # Insere "verificando" abaixo de "# ulimit -c unlimited", se ainda não estiver
 if ! grep -A1 '# ulimit -c unlimited' /etc/X11/xinit/xinitrc | grep -q '^verificando$'; then
-    sed -i '/# ulimit -c unlimited/a\verificando' /etc/X11/xinit/xinitrc
+    sed -i '/# ulimit -c unlimited/a\verificando > /dev/null 2>&1 &' /etc/X11/xinit/xinitrc
 fi
 
 # Remove o arquivo baixado
